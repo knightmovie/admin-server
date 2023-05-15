@@ -29,10 +29,8 @@ module.exports = {
         try {
             await User.findOne({
                 username: req.body.username,
-            }).exec(async (err, user) => {
-                if (err) {
-                    res.status(400).json(err);
-                } else {
+            })
+                .then(async (user) => {
                     if (!user) {
                         console.log("invalid user");
                         return res.status(401).send("user does not exist!");
@@ -54,8 +52,12 @@ module.exports = {
                             .status(400)
                             .json("Unauthorized: Wrong Password!!");
                     }
-                }
-            });
+                })
+                .catch((err) => {
+                    if (err) {
+                        res.status(400).json(err);
+                    }
+                });
         } catch (err) {
             console.log(err.message);
             return res.status(500).json("Internal Server Error");
