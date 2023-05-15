@@ -1,0 +1,31 @@
+const express = require("express");
+const mongoose = require("mongoose");
+
+require("./models/users.model");
+require("dotenv").config();
+const port = process.env.PORT || "8000";
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors({ origin: `http://localhost:${port}` }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+const dbURI = process.env.DB_URI + "/movies";
+
+mongoose
+    .connect(dbURI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => console.log("Database Connected"))
+    .catch((err) => console.log(err));
+
+mongoose.Promise = global.Promise;
+
+app.listen(port, () => {
+    console.log(`Listening to requests on http://localhost:${port}`);
+});
+
+module.exports = app;
