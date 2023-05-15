@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 require("./models/users.model");
 require("dotenv").config();
 const port = process.env.PORT || "8000";
+const usersRoute = require("./routes/index.js");
 const cors = require("cors");
 
 const app = express();
@@ -23,6 +24,8 @@ mongoose
     .catch((err) => console.log(err));
 
 mongoose.Promise = global.Promise;
+
+app.use("/", usersRoute);
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
