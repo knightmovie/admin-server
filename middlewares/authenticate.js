@@ -7,13 +7,15 @@ module.exports.isAuthenticate = async (req, res, next) => {
         if (isHeader) {
             const token = isHeader.split(" ")[1];
             req.user = await tokenService.verifyAccessToken(token);
-            next();
+            return next();
         } else {
-            res.status(403).send("token Unavailable!!");
+            return res.status(403).send("token Unavailable!!");
         }
     } catch (err) {
         console.log(err.message);
-        if (err instanceof jwt.TokenExpiredError) res.status(403).send(err);
-        res.status(500).send("Internal Server Error!!");
+        if (err instanceof jwt.TokenExpiredError) {
+            return res.status(403).send(err);
+        }
+        return res.status(500).send("Internal Server Error!!");
     }
 };
