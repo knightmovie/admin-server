@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const registrationCtrl = require("../controllers/registration.controller");
+const registerCtrl = require("../controllers/register.controller");
 const loginCtrl = require("../controllers/login.controller");
+const logoutCtrl = require("../controllers/logout.controller");
 const homeCtrl = require("../controllers/home.controller");
 const refreshCtrl = require("../controllers/refresh.controller");
-const { isAuthenticate } = require("../middlewares/authenticate");
+const { verifyJWT } = require("../middlewares/verifyJWT");
 
-router.post("/users/register", registrationCtrl.register);
+router.post("/users/register", registerCtrl.register);
 router.post("/users/login", loginCtrl.login);
-router.get("/home", isAuthenticate, homeCtrl.home);
-router.post("/refresh", refreshCtrl.refresh);
+router.get("/home", verifyJWT, homeCtrl.home);
+router.get("/refresh", refreshCtrl.refresh);
+router.get("/users/logout", logoutCtrl.logout);
 
 module.exports = router;

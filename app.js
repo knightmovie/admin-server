@@ -6,9 +6,11 @@ require("dotenv").config();
 const port = process.env.PORT || "8000";
 const usersRoute = require("./routes/index.js");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

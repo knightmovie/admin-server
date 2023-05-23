@@ -1,0 +1,2 @@
+GET http://localhost:8000/users/logout
+Content-Type: application/json

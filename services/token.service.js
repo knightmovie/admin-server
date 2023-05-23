@@ -2,17 +2,12 @@ const jwt = require("jsonwebtoken");
 const access_secret = process.env.ACCESS_TOKEN_SECRET;
 const refresh_secret = process.env.REFRESH_TOKEN_SECRET;
 
-module.exports.getAccessToken = (username) => {
+module.exports.getAccessToken = (user) => {
     return new Promise((resolve, reject) => {
-        jwt.sign(
-            { username },
-            access_secret,
-            { expiresIn: 60 },
-            (err, token) => {
-                if (err) reject(err);
-                resolve(token);
-            }
-        );
+        jwt.sign(user, access_secret, { expiresIn: "10s" }, (err, token) => {
+            if (err) reject(err);
+            resolve(token);
+        });
     });
 };
 
@@ -21,7 +16,7 @@ module.exports.getRefreshToken = (username) => {
         jwt.sign(
             { username },
             refresh_secret,
-            { expiresIn: 300 },
+            { expiresIn: "20s" },
             (err, token) => {
                 if (err) reject(err);
                 resolve(token);
